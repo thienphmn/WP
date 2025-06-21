@@ -1,9 +1,12 @@
 {% extends "base.html" %}
-{% block title %}starting page{% endblock %}
+{% block title %}Homepage{% endblock %}
+
 {% block content %}
-    <h1>Hallo!</h1>
-    <a>class="btn btn-primary">Die Oma ist ein Wolf!</a>
-    <p>What the fuck is a kilometer? RAHHHHHH
-    EVEN MORE RAHHHHHH</p>
-    <p>EVEN MORE ARAAAAAHAHHAHAHHA</p>
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+</nav>
 {% endblock %}

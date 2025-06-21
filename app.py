@@ -20,14 +20,18 @@ class Blogpost(db.Model):
 with app.app_context():
     db.create_all()
 
-
-
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template('index.html')
 @app.route('/about')
-def confirm():
-    return "Your redirect worked!"
+def about():
+    return render_template('about.html')
+@app.route('/addpost')
+def addpost():
+    return "This is addpost"
+
+def post():
+    return "Here is a singular post"
 
 if __name__ == '__main__':
     app.run(port=5551, debug=True )
