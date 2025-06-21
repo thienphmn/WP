@@ -7,7 +7,6 @@
         <article>
             <a href="{{ url_for('post', post_id=post.id) }}">
                 <h2>{{ post.title }}</h2>
-                <h3>{{ post.subtitle }}</h3>
             </a>
             <p>Posted by {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }}</p>
         </article>

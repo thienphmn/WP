@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, abort
+from flask import Flask, render_template, request, redirect, url_for, session, abort
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
@@ -11,12 +11,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'bl
 
 db = SQLAlchemy(app)
 class Blogpost(db.Model):
+    """Create a table in the database"""
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50))
     author = db.Column(db.String(20))
     date_posted = db.Column(db.DateTime)
     content = db.Column(db.Text)
 with app.app_context():
+    """initialize database"""
     db.create_all()
 
 ADMIN_USERNAME = '123'
@@ -40,8 +42,6 @@ def login():
         if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
             session['is_admin'] = True
             return redirect(url_for('index'))
-        else:
-            flash('Invalid credentials!')
 
     return render_template('login.html')
 
