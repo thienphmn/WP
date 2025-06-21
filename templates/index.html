@@ -2,11 +2,15 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
-<nav>
-  <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/about">About</a></li>
-    <li><a href="/contact">Contact</a></li>
-  </ul>
-</nav>
+    <main>
+        {% for post in posts %}
+        <article>
+            <a href="{{ url_for('post', post_id=post.id) }}">
+                <h2>{{ post.title }}</h2>
+                <h3>{{ post.subtitle }}</h3>
+            </a>
+            <p>Posted by {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }}</p>
+        </article>
+        {% endfor %}
+    </main>
 {% endblock %}
