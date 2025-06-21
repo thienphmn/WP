@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Edit Blogpost{% endblock %}
+
+{% block content %}
+    <main>
+        <form name="editForm" id="editForm" method="POST" action="{{ url_for('updatepost', post_id=post.id) }}">
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" placeholder="Title" value="{{ post.title }}" required>
+
+            <label for="author">Author</label>
+            <input type="text" name="author" id="author" placeholder="Author" value="{{ post.author }}" required>
+
+            <label for="content">Blog Content</label>
+            <textarea name="content" id="content" rows="5" placeholder="Blog content" required>{{ post.content }}</textarea>
+
+            <button type="submit">Update</button>
+        </form>
+    </main>
+{% endblock %}

@@ -55,5 +55,30 @@ def addpost():
     db.session.commit()
     return redirect(url_for('index'))
 
+@app.route('/edit/<int:post_id>/')
+def edit(post_id):
+    """edit single blog post"""
+    post = Blogpost.query.get_or_404(post_id)
+    return render_template('edit.html', post=post)
+
+@app.route('/updatepost/<int:post_id>/', methods=['POST'])
+def updatepost(post_id):
+    """commit to updating the post"""
+    post = Blogpost.query.get_or_404(post_id)
+    post.title = request.form['title']
+    post.author = request.form['author']
+    post.content = request.form['content']
+    db.session.commit()
+    return redirect(url_for('post', post_id=post_id))
+
+@app.route('/delete/<int:post_id>/')
+def delete(post_id):
+    """delete a single blog post"""
+    post = Blogpost.query.get_or_404(post_id)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(url_for('index'))
+
+
 if __name__ == '__main__':
     app.run(port=5551, debug=True )

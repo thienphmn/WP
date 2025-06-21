@@ -12,5 +12,9 @@
         <article>
             {{ post.content|safe }}
         </article>
+
+        <a href="{{ url_for('edit', post_id=post.id) }}" class="btn btn-primary">Edit Post</a>
+        <a href="{{ url_for('delete', post_id=post.id) }}" onclick="return confirm('Are you sure?')" class="btn btn-danger">Delete Post</a>
+
     </main>
 {% endblock %}
