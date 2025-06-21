@@ -1,24 +1,56 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session, flash, abort
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
+from functools import wraps
 
 app = Flask(__name__)
+app.secret_key = 'i_dont_know_what_this_does_except_it_being_important_for_sessions'
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'blog.db')
 
 db = SQLAlchemy(app)
-
 class Blogpost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50))
     author = db.Column(db.String(20))
     date_posted = db.Column(db.DateTime)
     content = db.Column(db.Text)
-
-# delete this after finalizing the model
 with app.app_context():
     db.create_all()
+
+ADMIN_USERNAME = '123'
+ADMIN_PASSWORD = '123'
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('is_admin'):
+            abort(403)  # Forbidden
+        return f(*args, **kwargs)
+    return decorated_function
+
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    """admin login"""
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+            session['is_admin'] = True
+            return redirect(url_for('index'))
+        else:
+            flash('Invalid credentials!')
+
+    return render_template('login.html')
+
+
+@app.route('/logout/')
+def logout():
+    """admin logout"""
+    session.pop('is_admin', None)
+    return redirect(url_for('index'))
 
 @app.route('/')
 def index():
@@ -38,11 +70,13 @@ def post(post_id):
     return render_template('post.html', post=post)
 
 @app.route('/add/')
+@admin_required
 def add():
     """opens HTML-form to create blog post"""
     return render_template('add.html')
 
 @app.route('/addpost/', methods=['POST'])
+@admin_required
 def addpost():
     """for posting a blog post to the database"""
     title = request.form['title']
@@ -56,12 +90,14 @@ def addpost():
     return redirect(url_for('index'))
 
 @app.route('/edit/<int:post_id>/')
+@admin_required
 def edit(post_id):
     """edit single blog post"""
     post = Blogpost.query.get_or_404(post_id)
     return render_template('edit.html', post=post)
 
 @app.route('/updatepost/<int:post_id>/', methods=['POST'])
+@admin_required
 def updatepost(post_id):
     """commit to updating the post"""
     post = Blogpost.query.get_or_404(post_id)
@@ -72,6 +108,7 @@ def updatepost(post_id):
     return redirect(url_for('post', post_id=post_id))
 
 @app.route('/delete/<int:post_id>/')
+@admin_required
 def delete(post_id):
     """delete a single blog post"""
     post = Blogpost.query.get_or_404(post_id)
