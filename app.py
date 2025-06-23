@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
 from functools import wraps
+import hashlib
 
 app = Flask(__name__)
 app.secret_key = 'i_dont_know_what_this_does_except_it_being_important_for_sessions'
@@ -21,8 +22,12 @@ with app.app_context():
     """initialize database"""
     db.create_all()
 
-ADMIN_USERNAME = '123'
-ADMIN_PASSWORD = '123'
+ADMIN_USERNAME = 'admin'
+ADMIN_PASSWORD_HASH = hashlib.sha256('This still does not feel safe.'.encode('utf-8')).hexdigest()
+
+def verify_password(plain_password, hashed_password):
+    """verify plain password against its hashed password"""
+    return hashlib.sha256(plain_password.encode()).hexdigest() == hashed_password
 
 def admin_required(f):
     @wraps(f)
@@ -39,7 +44,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+        if username == ADMIN_USERNAME and verify_password(password, ADMIN_PASSWORD_HASH):
             session['is_admin'] = True
             return redirect(url_for('index'))
 
