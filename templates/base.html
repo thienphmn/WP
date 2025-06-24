@@ -9,21 +9,21 @@
 </head>
 
 <body class="container mt-3 px-5" >
-    <header>
+     <header class="bg-light border-bottom shadow-sm mb-4 py-3">
         <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/about">About</a></li>
+            <ul class="nav">
+                <li><a class="nav-link text-dark" href="/">Home</a></li>
+                <li><a class="nav-link text-dark" href="/about">About</a></li>
                 {% if session.is_admin %}
-                <li><a href="{{ url_for('add') }}">Create Post</a> </li>
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                <li><a class="nav-link text-dark" href="{{ url_for('add') }}">Create Post</a></li>
+                <li><a class="nav-link text-dark" href="{{ url_for('logout') }}">Logout</a></li>
                 {% else %}
-                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a class="nav-link text-dark" href="{{ url_for('login') }}">Login</a></li>
                 {% endif %}
             </ul>
         </nav>
-
     </header>
+
         {% block content %}{% endblock content %}
 </body>
 </html>

@@ -23,7 +23,7 @@ with app.app_context():
     db.create_all()
 
 ADMIN_USERNAME = 'admin'
-ADMIN_PASSWORD_HASH = hashlib.sha256('This still does not feel safe.'.encode('utf-8')).hexdigest()
+ADMIN_PASSWORD_HASH = hashlib.sha256('somethingsecure'.encode('utf-8')).hexdigest()
 
 def verify_password(plain_password, hashed_password):
     """verify plain password against its hashed password"""

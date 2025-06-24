@@ -3,17 +3,17 @@
 
 {% block content %}
     <main>
-        <form method="POST" action="{{ url_for('updatepost', post_id=post.id) }}">
-            <label for="title">Title</label>
-            <input type="text" name="title" id="title" placeholder="Title" value="{{ post.title }}" required>
+        <form method="POST" action="{{ url_for('updatepost', post_id=post.id) }}" class="border rounded shadow-sm p-4">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" name="title" id="title" placeholder="Title" value="{{ post.title }}" class="form-control mb-3" required>
 
-            <label for="author">Author</label>
-            <input type="text" name="author" id="author" placeholder="Author" value="{{ post.author }}" required>
+            <label for="author" class="form-label">Author</label>
+            <input type="text" name="author" id="author" placeholder="Author" value="{{ post.author }}" class="form-control mb-3" required>
 
-            <label for="content">Blog Content</label>
-            <textarea name="content" id="content" rows="5" placeholder="Blog content" required>{{ post.content }}</textarea>
+            <label for="content" class="form-label">Blog Content</label>
+            <textarea name="content" id="content" rows="5" placeholder="Blog content" class="form-control" required>{{ post.content }}</textarea>
 
-            <button type="submit">Update</button>
+            <button type="submit" class="btn btn-success w-10 mt-4">Update</button>
         </form>
     </main>
 {% endblock %}
