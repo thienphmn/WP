@@ -60,7 +60,11 @@ def logout():
 @app.route('/')
 def index():
     """shows all blog posts ordered by date_posted"""
-    posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
+    page = request.args.get('page', 1, type=int)
+    posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).paginate(
+        page=page,
+        per_page=3
+    )
     return render_template('index.html', posts=posts)
 
 @app.route('/about/')

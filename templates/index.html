@@ -12,5 +12,34 @@
             <p>Posted by {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }}</p>
         </article>
         {% endfor %}
-    </main>
+
+       <nav class="mt-5">
+            <ul class="pagination justify-content-center">
+                {% if posts.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link text-center" href="{{ url_for('index', page=posts.prev_num) }}" style="width: 50px;">&lsaquo;</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link text-center" style="width: 50px;">&lsaquo;</span>
+                    </li>
+                {% endif %}
+
+                <li class=" active">
+                    <span class="page-link">Page {{ posts.page }} of {{ posts.pages }}</span>
+                </li>
+
+                {% if posts.has_next %}
+                    <li class="page-item">
+                        <a class="page-link text-center" href="{{ url_for('index', page=posts.next_num) }}" style="width: 50px;">&rsaquo;</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link text-center" style="width: 50px;">&rsaquo;</span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        </main>
 {% endblock %}
