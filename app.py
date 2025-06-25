@@ -23,7 +23,7 @@ with app.app_context():
     db.create_all()
 
 ADMIN_USERNAME = 'admin'
-ADMIN_PASSWORD_HASH = hashlib.sha256('somethingsecure'.encode('utf-8')).hexdigest()
+ADMIN_PASSWORD_HASH = hashlib.sha256('somethingsecure'.encode()).hexdigest()
 
 def verify_password(plain_password, hashed_password):
     """verify plain password against its hashed password"""
@@ -50,7 +50,6 @@ def login():
 
     return render_template('login.html')
 
-
 @app.route('/logout/')
 def logout():
     """admin logout"""
@@ -63,7 +62,7 @@ def index():
     page = request.args.get('page', 1, type=int)
     posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).paginate(
         page=page,
-        per_page=3
+        per_page=4
     )
     return render_template('index.html', posts=posts)
 
